@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:personal_learning/screens/note_reader.dart';
 import 'package:personal_learning/style/app_style.dart';
 import 'package:personal_learning/widgets/note_card.dart';
 
@@ -19,7 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         elevation: 0.0,
         backgroundColor: AppStyle.mainColor,
-        title: Text('My Notes'),
+        title: const Text('My Notes'),
         centerTitle: true,
       ),
       body: Padding(
@@ -35,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   fontWeight: FontWeight.bold,
                   fontSize: 22),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Expanded(
@@ -44,16 +45,24 @@ class _HomeScreenState extends State<HomeScreen> {
                     FirebaseFirestore.instance.collection("Notes").snapshots(),
                 builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(
+                    return const Center(
                       child: CircularProgressIndicator(),
                     );
                   }
                   if (snapshot.hasData) {
                     return GridView(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2),
                       children: snapshot.data!.docs
-                          .map((note) => noteCard(() => {}, note))
+                          .map((note) => noteCard(() {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          NoteReaderScreen(note),
+                                    ));
+                              }, note))
                           .toList(),
                     );
                   }
@@ -73,7 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
           'Add note',
           style: GoogleFonts.roboto(color: Colors.white, fontSize: 16),
         ),
-        icon: Icon(Icons.add),
+        icon: const Icon(Icons.add),
       ),
     );
   }
