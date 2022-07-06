@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:personal_learning/screens/note_editor.dart';
 import 'package:personal_learning/screens/note_reader.dart';
 import 'package:personal_learning/style/app_style.dart';
 import 'package:personal_learning/widgets/note_card.dart';
@@ -77,7 +78,10 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => {},
+        onPressed: () => {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => NoteEditorScreen()))
+        },
         label: Text(
           'Add note',
           style: GoogleFonts.roboto(color: Colors.white, fontSize: 16),
